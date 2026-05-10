@@ -1,0 +1,5 @@
+# Loads the Rails application tasks, including database tasks such as
+# db:create, db:migrate, db:prepare and db:seed.
+require_relative "config/application"
+
+Rails.application.load_tasks

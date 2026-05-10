@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+# Runs Rake tasks in the context of this Rails application.
+require_relative "../config/boot"
+require "rake"
+Rake.application.run

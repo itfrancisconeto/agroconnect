@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+# This file makes Rails commands run in the context of this application.
+# Without it, calling `rails` may show only the global Rails help screen.
+APP_PATH = File.expand_path("../config/application", __dir__)
+require_relative "../config/boot"
+require "rails/commands"

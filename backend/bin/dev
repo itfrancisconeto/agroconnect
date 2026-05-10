@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -e
+
+# Always run from the Rails app root inside the container.
+cd /app
+
+# Avoids the common Rails error caused by a stale server PID when the container restarts.
+rm -f tmp/pids/server.pid
+
+# Prepares the database before starting the server:
+# - creates the database when it does not exist;
+# - runs pending migrations;
+# - loads seeds when the database is created for the first time.
+bundle exec ./bin/rails db:prepare
+
+# Starts Puma bound to 0.0.0.0 so the API is reachable from the host machine
+# through the Docker port mapping 3000:3000.
+exec bundle exec ./bin/rails server -b 0.0.0.0 -p 3000
