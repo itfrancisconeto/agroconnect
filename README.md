@@ -12,7 +12,7 @@ O objetivo é oferecer uma base clara e extensível para um backoffice de atendi
 
 ## Funcionalidades Principais
 
-- Cadastro e gerenciamento de clientes
+- Cadastro de clientes
 - Catálogo de áreas de produto
 - Criação de solicitações
 - Listagem e filtragem de solicitações
@@ -67,7 +67,7 @@ O frontend é responsável pela interface do usuário e consome o backend por me
 
 A aplicação é organizada em torno de quatro entidades principais:
 
-- **Cliente**: representa um cliente que pode abrir solicitações.
+- **Cliente**: representa um cliente para o qual se pode abrir solicitações.
 - **Área de Produto**: representa uma área de negócio ou linha de produto dentro do ecossistema agro.
 - **Solicitação**: representa uma demanda de cliente relacionada a uma área de produto específica.
 - **Comentário**: representa o histórico de interações de uma solicitação.
