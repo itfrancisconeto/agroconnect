@@ -37,7 +37,7 @@ services:
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_NAME: agroconnect_development
-      FRONTEND_URL: http://localhost:5173
+      FRONTEND_URL: http://localhost:5173,http://localhost:5174,http://192.168.1.22:5174
     depends_on:
       db:
         condition: service_healthy
@@ -59,6 +59,23 @@ services:
     environment:
       # This URL is used by the browser, so localhost is correct here.
       VITE_API_URL: http://localhost:3000/api/v1
+    depends_on:
+      - api
+    stdin_open: true
+    tty: true
+
+  mobile:
+    build:
+      context: ./mobile
+    container_name: agroconnect-mobile
+    command: npm run dev -- --host 0.0.0.0 --port 5174
+    volumes:
+      - ./mobile:/app
+      - /app/node_modules
+    ports:
+      - "5174:5174"
+    environment:
+      VITE_API_URL: http://192.168.1.22:3000/api/v1
     depends_on:
       - api
     stdin_open: true
