@@ -16,6 +16,18 @@ A versão mobile foi criada com Ionic React para oferecer uma interface otimizad
 
 O objetivo é oferecer uma base clara e extensível para um backoffice de atendimento e operações, que possa evoluir futuramente para uma plataforma mais ampla de suporte, onboarding, customer success ou acompanhamento de demandas em campo.
 
+## Screenshots
+
+### Backoffice Web
+
+![Backoffice Web](docs/screenshots/web1.png)
+
+![Backoffice Web](docs/screenshots/web2.png)
+
+### Aplicativo Mobile
+
+![Aplicativo Mobile](docs/screenshots/mobile.png)
+
 ## Funcionalidades Principais
 
 - Cadastro de clientes
