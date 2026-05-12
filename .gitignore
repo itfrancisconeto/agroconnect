@@ -16,7 +16,9 @@ yarn-error.log*
 
 # Node / React
 frontend/node_modules/
+mobile/node_modules/
 frontend/dist/
+mobile/dist/
 frontend/.vite/
 
 # Rails
@@ -34,3 +36,7 @@ backend/config/credentials.yml.enc
 
 # Docker volumes / local files
 postgres_data/
+
+# Vite cache
+frontend/.vite/
+mobile/.vite/
