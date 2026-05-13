@@ -22,8 +22,6 @@ O objetivo é oferecer uma base clara e extensível para um backoffice de atendi
 
 <img src="docs/screenshots/web1.png" alt="Backoffice Web" width="900" />
 
-<img src="docs/screenshots/web2.png" alt="Backoffice Web - Solicitações" width="900" />
-
 ### Aplicativo Mobile
 
 <div>
