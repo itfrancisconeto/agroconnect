@@ -12,7 +12,7 @@ O AgroConnect funciona como uma plataforma leve de gestão de solicitações par
 
 O backoffice web permite que uma equipe interna cadastre clientes, classifique solicitações por área de produto, acompanhe o status dos atendimentos, defina prioridades e mantenha um histórico de comunicação por meio de comentários.
 
-A versão mobile foi criada com Ionic React para oferecer uma interface otimizada para dispositivos móveis, permitindo acompanhar solicitações, filtrar demandas, adicionar comentários e avançar status diretamente em uma experiência mobile.
+A versão mobile foi criada com Ionic React para oferecer uma interface otimizada para dispositivos móveis, permitindo acompanhar solicitações, filtrar demandas, adicionar comentários, avançar status e cadastrar novos clientes e solicitações diretamente pela interface mobile.
 
 O objetivo é oferecer uma base clara e extensível para um backoffice de atendimento e operações, que possa evoluir futuramente para uma plataforma mais ampla de suporte, onboarding, customer success ou acompanhamento de demandas em campo.
 
@@ -24,16 +24,25 @@ O objetivo é oferecer uma base clara e extensível para um backoffice de atendi
 
 ### Aplicativo Mobile
 
-<div>
-  <img src="docs/screenshots/mobile1.jpg" alt="Aplicativo Mobile - Tela inicial" width="280" />
-  <img src="docs/screenshots/mobile2.jpg" alt="Aplicativo Mobile - Solicitações" width="280" />
+<div align="center">
+  <img src="docs/screenshots/mobile1.jpg" alt="Aplicativo Mobile - Tela inicial" width="220" />
+  <img src="docs/screenshots/mobile2.jpg" alt="Aplicativo Mobile - Solicitações" width="220" />
+  <img src="docs/screenshots/mobile3.jpg" alt="Aplicativo Mobile - Detalhes da solicitação" width="220" />
+</div>
+
+<br />
+
+<div align="center">
+  <img src="docs/screenshots/mobile4.jpg" alt="Aplicativo Mobile - Cadastro de cliente" width="220" />
+  <img src="docs/screenshots/mobile5.jpg" alt="Aplicativo Mobile - Cadastro de solicitação" width="220" />
+  <img src="docs/screenshots/mobile6.jpg" alt="Aplicativo Mobile - Comentários e status" width="220" />
 </div>
 
 ## Funcionalidades Principais
 
-- Cadastro de clientes
+- Cadastro de clientes pelo backoffice web e pelo mobile
+- Criação de solicitações pelo backoffice web e pelo mobile
 - Catálogo de áreas de produto
-- Criação de solicitações
 - Listagem e filtragem de solicitações
 - Acompanhamento de solicitações por status
 - Filtro por área de produto
@@ -363,6 +372,12 @@ A cobertura inclui:
 - Validação dos formatadores de status e prioridade
 - Renderização da tela mobile com dados mockados da API
 - Validação da exibição de solicitações, status, prioridades e comentários
+- Testes do modal de cadastro de clientes
+- Testes do modal de cadastro de solicitações
+- Validação de eventos de formulário, como alteração de campos, selects e datas
+- Validação de ações de salvar, cancelar e fechar modais
+- Validação de CPF/CNPJ no cadastro de clientes
+- Uso de mocks centralizados para componentes Ionic, Capacitor Network, Ionicons e API
 
 Executar todos os testes do mobile:
 
@@ -416,6 +431,5 @@ O AgroConnect foi projetado como um MVP extensível. Possíveis próximos passos
 - Trilha de auditoria para alterações de status e comentários
 - Busca, paginação e filtros avançados
 - Quadro de tickets em formato Kanban
-- Criação de solicitações diretamente pelo app mobile
 - Build Android/iOS com Capacitor
 - Notificações push para acompanhamento de solicitações
