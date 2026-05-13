@@ -350,3 +350,21 @@ ion-textarea {
   text-transform: uppercase;
   vertical-align: middle;
 }
+
+.mobile-quick-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.mobile-modal-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.mobile-field-error {
+  display: block;
+  margin: 6px 16px 10px;
+  font-weight: 700;
+}

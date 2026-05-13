@@ -39,23 +39,54 @@ import "./App.css";
 import "./theme/variables.css";
 
 import { agroconnectApi } from "@shared/agroconnectApi";
-import type { ProductArea, RequestTicket } from "./types";
+import type {
+  Customer,
+  CustomerPayload,
+  ProductArea,
+  RequestTicket,
+  TicketPayload
+} from "@shared/types";
 import {
   formatTicketPriority,
   formatTicketStatus
 } from "./utils/ticketFormatters";
+import { CustomerModal } from "./components/CustomerModal";
+import { TicketModal } from "./components/TicketModal";
 
 setupIonicReact();
+
+const initialCustomerForm: CustomerPayload = {
+  name: "",
+  document: "",
+  customer_type: "rural_producer",
+  city: "",
+  state: ""
+};
+
+const initialTicketForm: TicketPayload = {
+  customer_id: 0,
+  product_area_id: 0,
+  title: "",
+  description: "",
+  priority: "medium",
+  status: "open",
+  due_date: ""
+};
 
 function App() {
   const [tickets, setTickets] = useState<RequestTicket[]>([]);
   const [productAreas, setProductAreas] = useState<ProductArea[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [statusFilter, setStatusFilter] = useState("");
   const [areaFilter, setAreaFilter] = useState("");
   const [commentByTicketId, setCommentByTicketId] = useState<Record<number, string>>({});
   const [toastMessage, setToastMessage] = useState("");
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
+  const [customerForm, setCustomerForm] = useState<CustomerPayload>(initialCustomerForm);
+  const [ticketForm, setTicketForm] = useState<TicketPayload>(initialTicketForm);
+  const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
+  const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
 
   const summary = useMemo(() => {
     return {
@@ -72,7 +103,8 @@ function App() {
 
   const loadData = useCallback(async () => {
     try {
-      const [areasResponse, ticketsResponse] = await Promise.all([
+      const [customersResponse, areasResponse, ticketsResponse] = await Promise.all([
+        agroconnectApi.getCustomers() as Promise<Customer[]>,
         agroconnectApi.getProductAreas() as Promise<ProductArea[]>,
         agroconnectApi.getTickets({
           status: statusFilter,
@@ -80,6 +112,7 @@ function App() {
         }) as Promise<RequestTicket[]>
       ]);
 
+      setCustomers(customersResponse);
       setProductAreas(areasResponse);
       setTickets(ticketsResponse);
     } catch {
@@ -111,6 +144,45 @@ function App() {
   async function handleRefresh(event: CustomEvent) {
     await loadData();
     event.detail.complete();
+  }
+
+  async function handleCreateCustomer() {
+    if (!customerForm.name || !customerForm.city || !customerForm.state) {
+      showToast("Preencha nome, cidade e estado do cliente.");
+      return;
+    }
+
+    try {
+      await agroconnectApi.createCustomer(customerForm);
+      setCustomerForm(initialCustomerForm);
+      setIsCustomerModalOpen(false);
+      showToast("Cliente criado com sucesso.");
+      await loadData();
+    } catch {
+      showToast("Não foi possível criar o cliente.");
+    }
+  }
+
+  async function handleCreateTicket() {
+    if (!ticketForm.customer_id || !ticketForm.product_area_id) {
+      showToast("Selecione um cliente e uma área do produto.");
+      return;
+    }
+
+    if (!ticketForm.title || !ticketForm.description) {
+      showToast("Preencha título e descrição da solicitação.");
+      return;
+    }
+
+    try {
+      await agroconnectApi.createTicket(ticketForm);
+      setTicketForm(initialTicketForm);
+      setIsTicketModalOpen(false);
+      showToast("Solicitação criada com sucesso.");
+      await loadData();
+    } catch {
+      showToast("Não foi possível criar a solicitação.");
+    }
   }
 
   async function handleAdvanceStatus(ticket: RequestTicket) {
@@ -175,11 +247,30 @@ function App() {
                 gestão, campo, sementes, laboratório, análise de dados e integrações.
               </p>
             </div>
-
             <div className="mobile-hero-icon" aria-hidden="true">
               <IonIcon icon={leafOutline} />
             </div>
           </section>
+
+          <IonCard className="mobile-summary-card">
+            <IonCardHeader>
+              <IonCardTitle>Cadastrar</IonCardTitle>
+            </IonCardHeader>
+
+            <IonCardContent>
+              <div>
+                <div className="mobile-quick-actions">
+                  <IonButton expand="block" color="success" onClick={() => setIsCustomerModalOpen(true)}>
+                    Cliente
+                  </IonButton>
+
+                  <IonButton expand="block" fill="outline" onClick={() => setIsTicketModalOpen(true)}>
+                    Solicitação
+                  </IonButton>
+                </div>
+              </div>
+            </IonCardContent>
+          </IonCard>
 
           <IonCard className="mobile-summary-card">
             <IonCardHeader>
@@ -323,6 +414,24 @@ function App() {
               </IonCardContent>
             </IonCard>
           ))}
+
+          <CustomerModal
+            isOpen={isCustomerModalOpen}
+            value={customerForm}
+            onChange={setCustomerForm}
+            onClose={() => setIsCustomerModalOpen(false)}
+            onSubmit={handleCreateCustomer}
+          />
+
+          <TicketModal
+            isOpen={isTicketModalOpen}
+            value={ticketForm}
+            customers={customers}
+            productAreas={productAreas}
+            onChange={setTicketForm}
+            onClose={() => setIsTicketModalOpen(false)}
+            onSubmit={handleCreateTicket}
+          />
 
           <IonToast
             isOpen={isToastOpen}

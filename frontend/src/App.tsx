@@ -42,18 +42,6 @@ type SnackbarState = {
   type: "success" | "error";
 } | null;
 
-function formatStatus(status: string) {
-  const statusLabels: Record<string, string> = {
-    open: "Aberta",
-    in_progress: "Em andamento",
-    waiting_customer: "Aguardando cliente",
-    resolved: "Resolvida",
-    closed: "Fechada"
-  };
-
-  return statusLabels[status] ?? status;
-}
-
 function App() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [productAreas, setProductAreas] = useState<ProductArea[]>([]);
