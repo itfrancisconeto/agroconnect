@@ -27,4 +27,10 @@ export default tseslint.config(
       'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     },
   },
+  {
+    files: ['**/*.test.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 )
