@@ -1,77 +1,106 @@
+import axios from "axios";
 import type { CustomerPayload, RequestTicket, TicketPayload } from "./types";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api/v1";
 
-async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${API_URL}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers
-    },
-    ...options
-  });
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json"
+  }
+});
 
-  if (!response.ok) {
-    const errorBody = await response.json().catch(() => null);
-    const message = Array.isArray(errorBody?.error)
-      ? errorBody.error.join(", ")
-      : errorBody?.error ?? "Unexpected API error";
+function getErrorMessage(error: unknown) {
+  if (axios.isAxiosError(error)) {
+    const errorBody = error.response?.data;
 
-    throw new Error(message);
+    if (Array.isArray(errorBody?.error)) {
+      return errorBody.error.join(", ");
+    }
+
+    if (typeof errorBody?.error === "string") {
+      return errorBody.error;
+    }
+
+    return error.message || "Unexpected API error";
   }
 
-  if (response.status === 204) {
-    return undefined as T;
+  if (error instanceof Error) {
+    return error.message;
   }
 
-  return response.json() as Promise<T>;
+  return "Unexpected API error";
+}
+
+async function request<T>(callback: () => Promise<{ data: T }>): Promise<T> {
+  try {
+    const response = await callback();
+    return response.data;
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
+  }
 }
 
 export const agroconnectApi = {
-  getCustomers: () => request("/customers"),
+  getCustomers: () =>
+    request(() => api.get("/customers")),
+
   createCustomer: (customer: CustomerPayload) =>
-    request("/customers", {
-      method: "POST",
-      body: JSON.stringify({ customer })
-    }),
+    request(() =>
+      api.post("/customers", {
+        customer
+      })
+    ),
 
-  getProductAreas: () => request("/product_areas"),
+  getProductAreas: () =>
+    request(() => api.get("/product_areas")),
 
-  getTickets: (filters: { status?: string; productAreaId?: string }) => {
-    const params = new URLSearchParams();
-
-    if (filters.status) params.set("status", filters.status);
-    if (filters.productAreaId) params.set("product_area_id", filters.productAreaId);
-
-    const query = params.toString();
-    return request<RequestTicket[]>(`/request_tickets${query ? `?${query}` : ""}`);
-  },
+  getTickets: (filters: { status?: string; productAreaId?: string }) =>
+    request<RequestTicket[]>(() =>
+      api.get("/request_tickets", {
+        params: {
+          status: filters.status || undefined,
+          product_area_id: filters.productAreaId || undefined
+        }
+      })
+    ),
 
   createTicket: (requestTicket: TicketPayload) =>
-    request<RequestTicket>("/request_tickets", {
-      method: "POST",
-      body: JSON.stringify({ request_ticket: requestTicket })
-    }),
+    request<RequestTicket>(() =>
+      api.post("/request_tickets", {
+        request_ticket: {
+          customer_id: Number(requestTicket.customer_id),
+          product_area_id: Number(requestTicket.product_area_id),
+          title: requestTicket.title,
+          description: requestTicket.description,
+          priority: requestTicket.priority,
+          status: requestTicket.status,
+          due_date: requestTicket.due_date
+        }
+      })
+    ),
 
   advanceTicketStatus: (ticketId: number) =>
-    request<RequestTicket>(`/request_tickets/${ticketId}/advance_status`, {
-      method: "PATCH"
-    }),
+    request<RequestTicket>(() =>
+      api.patch(`/request_tickets/${ticketId}/advance_status`)
+    ),
 
-  deleteTicket: (ticketId: number) =>
-    request<void>(`/request_tickets/${ticketId}`, {
-      method: "DELETE"
-    }),
+  deleteTicket: async (ticketId: number) => {
+    try {
+      await api.delete(`/request_tickets/${ticketId}`);
+    } catch (error) {
+      throw new Error(getErrorMessage(error));
+    }
+  },
 
   createComment: (ticketId: number, message: string) =>
-    request<RequestTicket>(`/request_tickets/${ticketId}/ticket_comments`, {
-      method: "POST",
-      body: JSON.stringify({
+    request<RequestTicket>(() =>
+      api.post(`/request_tickets/${ticketId}/ticket_comments`, {
         ticket_comment: {
           author_name: "AgroConnect Team",
           message,
           internal: false
         }
       })
-    })
+    )
 };

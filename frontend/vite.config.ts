@@ -2,29 +2,36 @@
 
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
-import path from "path";
+import { existsSync } from "node:fs";
+import path from "node:path";
+
+const sharedPath = existsSync(path.resolve(__dirname, "shared"))
+  ? path.resolve(__dirname, "shared")
+  : path.resolve(__dirname, "../shared");
 
 export default defineConfig({
   plugins: [react()],
 
   resolve: {
     alias: {
-      "@shared": path.resolve(__dirname, "../shared")
+      "@shared": sharedPath,
+      axios: path.resolve(__dirname, "node_modules/axios/dist/esm/axios.js")
     }
   },
 
   server: {
     host: "0.0.0.0",
     port: 5173,
-
     fs: {
-      allow: [".."]
+      allow: [path.resolve(__dirname), sharedPath]
     },
-
     watch: {
-      // Improves file change detection when running Vite inside Docker on Linux/WSL.
       usePolling: true
     }
+  },
+
+  optimizeDeps: {
+    include: ["axios"]
   },
 
   test: {

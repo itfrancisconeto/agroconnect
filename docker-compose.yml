@@ -55,7 +55,7 @@ services:
       # Prevents the host bind mount from hiding node_modules installed in the image.
       - /app/node_modules
       # Shared folder
-      - ./shared:/shared
+      - ./shared:/app/shared
     ports:
       - "5173:5173"
     environment:
@@ -74,7 +74,7 @@ services:
     volumes:
       - ./mobile:/app
       - /app/node_modules
-      - ./shared:/shared
+      - ./shared:/app/shared
     ports:
       - "5174:5174"
     environment:
