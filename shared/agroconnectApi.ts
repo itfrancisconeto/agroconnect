@@ -1,4 +1,4 @@
-import type { CustomerPayload, RequestTicket, TicketPayload } from "../types";
+import type { CustomerPayload, RequestTicket, TicketPayload } from "./types";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api/v1";
 

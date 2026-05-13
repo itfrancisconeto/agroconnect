@@ -38,7 +38,7 @@ import "@ionic/react/css/flex-utils.css";
 import "./App.css";
 import "./theme/variables.css";
 
-import { agroconnectApi } from "./api/agroconnectApi";
+import { agroconnectApi } from "@shared/agroconnectApi";
 import type { ProductArea, RequestTicket } from "./types";
 import {
   formatTicketPriority,

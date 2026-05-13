@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import { Leaf, RefreshCw } from "lucide-react";
-import { agroconnectApi } from "./api/agroconnectApi";
+import { agroconnectApi } from "@shared/agroconnectApi";
 import { CustomerForm } from "./components/CustomerForm";
 import { Snackbar } from "./components/Snackbar";
 import { SummaryCard } from "./components/SummaryCard";
