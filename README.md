@@ -20,15 +20,16 @@ O objetivo é oferecer uma base clara e extensível para um backoffice de atendi
 
 ### Backoffice Web
 
-![Backoffice Web](docs/screenshots/web1.png)
+<img src="docs/screenshots/web1.png" alt="Backoffice Web" width="900" />
 
-![Backoffice Web](docs/screenshots/web2.png)
+<img src="docs/screenshots/web2.png" alt="Backoffice Web - Solicitações" width="900" />
 
 ### Aplicativo Mobile
 
-![Aplicativo Mobile](docs/screenshots/mobile1.jpg)
-
-![Aplicativo Mobile](docs/screenshots/mobile2.jpg)
+<div>
+  <img src="docs/screenshots/mobile1.jpg" alt="Aplicativo Mobile - Tela inicial" width="280" />
+  <img src="docs/screenshots/mobile2.jpg" alt="Aplicativo Mobile - Solicitações" width="280" />
+</div>
 
 ## Funcionalidades Principais
 
