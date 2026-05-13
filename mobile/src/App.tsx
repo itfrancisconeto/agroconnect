@@ -25,6 +25,7 @@ import {
   IonToolbar,
   setupIonicReact
 } from "@ionic/react";
+import { Network } from "@capacitor/network";
 import { leafOutline } from "ionicons/icons";
 
 import "@ionic/react/css/core.css";
@@ -54,6 +55,7 @@ function App() {
   const [commentByTicketId, setCommentByTicketId] = useState<Record<number, string>>({});
   const [toastMessage, setToastMessage] = useState("");
   const [isToastOpen, setIsToastOpen] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
 
   const summary = useMemo(() => {
     return {
@@ -88,6 +90,23 @@ function App() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  useEffect(() => {
+    async function loadNetworkStatus() {
+      const status = await Network.getStatus();
+      setIsOnline(status.connected);
+    }
+
+    loadNetworkStatus();
+
+    const listener = Network.addListener("networkStatusChange", (status) => {
+      setIsOnline(status.connected);
+    });
+
+    return () => {
+      listener.then((handler) => handler.remove());
+    };
+  }, []);
 
   async function handleRefresh(event: CustomEvent) {
     await loadData();
@@ -135,8 +154,10 @@ function App() {
     <IonApp>
       <IonPage>
         <IonHeader>
-          <IonToolbar color="primary">
-            <IonTitle>AgroConnect Mobile</IonTitle>
+          <IonToolbar className={isOnline ? "mobile-toolbar-online" : "mobile-toolbar-offline"}>
+            <IonTitle>
+              AgroConnect Mobile {!isOnline ? <span className="offline-label">Offline</span> : null}
+            </IonTitle>
           </IonToolbar>
         </IonHeader>
 

@@ -326,3 +326,27 @@ ion-textarea {
   font-size: 0.9rem;
   line-height: 1.5;
 }
+
+.mobile-toolbar-online {
+  --background: #2f6f3e;
+  --color: #ffffff;
+}
+
+.mobile-toolbar-offline {
+  --background: #bb2d3b;
+  --color: #ffffff;
+}
+
+.offline-label {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
