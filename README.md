@@ -26,7 +26,9 @@ O objetivo é oferecer uma base clara e extensível para um backoffice de atendi
 
 ### Aplicativo Mobile
 
-![Aplicativo Mobile](docs/screenshots/mobile.png)
+![Aplicativo Mobile](docs/screenshots/mobile1.png)
+
+![Aplicativo Mobile](docs/screenshots/mobile2.png)
 
 ## Funcionalidades Principais
 
